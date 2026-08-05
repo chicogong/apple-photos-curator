@@ -1,10 +1,14 @@
 # Apple Photos Safe Organizer
 
-一个面向 Codex 的 Apple Photos 安全整理 Skill：先审计、再设计、后执行，帮助整理相簿与文件夹，同时避免误改 GPS、误处理隐藏照片或误删媒体。
+[中文](#中文) · [English](#english)
+
+## 中文
+
+这是一个面向 Codex 的 Apple Photos 安全整理 Skill：先审计、再设计、后执行，帮助整理相簿与文件夹，同时避免误改 GPS、误处理隐藏照片或误删媒体。
 
 本仓库是通用、隐私安全的公开版本，不包含照片、Photos 数据库、缩略图、OCR 导出、精确坐标、删除清单或任何个人整理报告。
 
-## 适用场景
+### 适用场景
 
 这个 Skill 适合以下类型的任务：
 
@@ -14,10 +18,10 @@
 - **隐藏与私密媒体**：保持隐藏状态，单独处理敏感资料；只有明确授权并完成系统认证后，才考虑“解除隐藏—建立关系—重新隐藏”的闭环。
 - **截图、文档和二维码**：按用途分为资料、卡包、重要信息、有意思的内容和人工待清理，不把 OCR 缺失或分辨率低直接当作删除依据。
 - **视频与 Live Photo**：区分视频、Live Photo 和特殊媒体，优先做可验证的归类，不仅凭文件名推断内容。
-- **T7 或其他外部存储去重**：只有在字节级 SHA-256、媒体有效性、相簿关系、隐藏状态和保留副本都核对后，才提出外部副本删除候选。
+- **外部存储去重**：只有在字节级 SHA-256、媒体有效性、相簿关系、隐藏状态和保留副本都核对后，才提出外部副本删除候选。
 - **本地同步检查**：在不访问云服务的前提下检查本机 Photos 状态、计数、隐藏数量和相关队列；云端问题单独说明边界。
 
-## 不会自动做的事
+### 不会自动做的事
 
 以下操作不是默认行为，必须有单独、明确的授权和可回滚方案：
 
@@ -29,7 +33,7 @@
 - 未确认同步稳定性前执行批量变更；
 - 在用户要求本地处理时访问云服务。
 
-## 推荐工作流程
+### 推荐工作流程
 
 ```text
 范围确认
@@ -49,9 +53,9 @@
 
 每一轮都要把“相簿关系变化”和“媒体变化”分开报告。加入一个相簿只增加引用，不会复制原始媒体；删除媒体则必须另行确认。
 
-## 使用方法
+### 使用方法
 
-### 1. 在 Codex 中使用
+#### 1. 在 Codex 中使用
 
 Skill 被明确安装到某个 Codex 环境后，可用类似下面的请求开始：
 
@@ -77,7 +81,7 @@ Skill 被明确安装到某个 Codex 环境后，可用类似下面的请求开�
 
 本仓库本身不会自动把 Skill 安装到开发机器；安装与启用应由使用者明确控制。
 
-### 2. 运行只读审计脚本
+#### 2. 运行只读审计脚本
 
 脚本会把 `Photos.sqlite` 以及存在的 WAL/SHM sidecar 复制到临时目录，以只读方式查询，并只输出聚合统计和元数据指纹。它不会写入 Photos Library，也不会读取或删除原始媒体。
 
@@ -93,7 +97,7 @@ python3 skills/apple-photos-safe-organizer-skill/scripts/audit_photos_library.py
 
 如果机器上只有一个 `*.photoslibrary`，也可以省略 `--library`；存在多个图库时必须显式指定。
 
-### 3. 发布前检查
+#### 3. 发布前检查
 
 ```bash
 python3 skills/apple-photos-safe-organizer-skill/scripts/validate_skill.py \
@@ -108,9 +112,9 @@ python3 -m py_compile skills/apple-photos-safe-organizer-skill/scripts/*.py
 
 隐私扫描会拒绝常见的本地路径、邮箱、UUID、精确坐标、令牌和敏感文件模式。它是发布前的最后一道检查，不替代人工 review。
 
-## 整理决策原则
+### 整理决策原则
 
-### 相簿与文件夹
+#### 相簿与文件夹
 
 - 用较浅的层级承载稳定维度：时间/事件、地点/旅行、人物、来源、截图/资料、收藏和复核队列。
 - 来源与导入历史用于追溯，不作为唯一的浏览主结构。
@@ -118,14 +122,14 @@ python3 -m py_compile skills/apple-photos-safe-organizer-skill/scripts/*.py
 - 旧相簿通常先保留，新增覆盖视图并完成计数核对后，再讨论是否退役旧结构。
 - 反复到访的城市或校园可以按不重叠时间段拆分；小地点只有在照片数量、内容和地理证据都稳定时才单独建相簿。
 
-### 隐藏、私密与低质量媒体
+#### 隐藏、私密与低质量媒体
 
 - 隐藏状态是保护边界，不是整理障碍；默认保持隐藏。
 - 老手机、低分辨率、模糊或 OCR 缺失只是人工复核信号，不等于无价值。
 - 卡包、证件、二维码、账号信息和私密人物照片应与普通回忆相簿分开。
 - 任何“解除隐藏后加入相簿再隐藏”的方案，都必须先冻结精确清单，执行后逐项验证清单和隐藏数量一致。
 
-### 重复与外部硬盘
+#### 重复与外部硬盘
 
 外部文件只有同时满足以下条件，才可以进入“可删除候选”：
 
@@ -135,11 +139,11 @@ python3 -m py_compile skills/apple-photos-safe-organizer-skill/scripts/*.py
 4. 确认保留副本可访问，并记录恢复路径；
 5. 重新展示精确候选清单，由用户确认后再执行删除。
 
-## 目录结构
+### 目录结构
 
 ```text
 .
-├── README.md                         # 本仓库的中文使用说明
+├── README.md                         # 本仓库的中英文使用说明
 ├── LICENSE
 ├── .github/workflows/validate.yml    # CI 结构、脚本和隐私校验
 └── skills/apple-photos-safe-organizer-skill/
@@ -156,7 +160,7 @@ python3 -m py_compile skills/apple-photos-safe-organizer-skill/scripts/*.py
 
 Skill 包内刻意不放 README、照片、数据库副本、报告或安装脚本；这些内容属于仓库说明或使用者自己的本地环境。
 
-## 验收标准
+### 验收标准
 
 一次整理只有在以下项目都符合预期时才算完成：
 
@@ -170,6 +174,182 @@ Skill 包内刻意不放 README、照片、数据库副本、报告或安装脚�
 
 发现任何无法解释的计数、指纹、隐藏状态或相簿关系变化，都应停止后续操作并重新审计。
 
-## 许可证
+### 许可证
 
 MIT。
+
+## English
+
+Apple Photos Safe Organizer is a Codex Skill for safe, evidence-based Apple Photos organization. It audits first, designs a dry-run plan second, and applies only approved changes in small batches. Its purpose is to organize albums and folders without guessing GPS corrections, exposing hidden media, or deleting media accidentally.
+
+This repository is a generic, privacy-safe public package. It contains no photos, Photos databases, thumbnails, OCR exports, precise coordinates, deletion manifests, or user-specific reports.
+
+### Use cases
+
+Use this Skill for:
+
+- **Album and folder design:** plan a shallow structure by place, time, people, source, media type, and review state.
+- **Travel and place organization:** group recurring visits, trip batches, cities, and meaningful small places while keeping weak evidence in a review queue.
+- **GPS anomaly triage:** compare country, city, timestamps, nearby assets, and visible context; never rewrite GPS just because a map label looks implausible.
+- **Hidden and private media:** preserve hidden state and separate sensitive material; only consider an unhide–organize–rehide round trip after explicit authorization and system authentication.
+- **Screenshots, documents, and QR codes:** separate reference material, cards, important information, interesting items, and manual-review candidates. Missing OCR or low resolution is not a deletion decision.
+- **Videos and Live Photos:** classify special media using verifiable evidence instead of filenames alone.
+- **External-storage deduplication:** propose deletion candidates only after byte-exact SHA-256 checks, media validity checks, album-relationship checks, visibility checks, and confirmation of a retained copy.
+- **Local sync review:** inspect local Photos counts, hidden counts, and available local queues without accessing cloud services when the task is local-only.
+
+### What it does not do automatically
+
+These actions require separate, explicit authorization and a recoverable plan:
+
+- modify `Photos.sqlite` or files inside the Photos Library package directly;
+- rewrite GPS based only on a country, city, filename, or one photo;
+- unhide media, export private thumbnails, or publish OCR text just to organize it;
+- delete Photos or external-drive media based only on filename, size, duration, or visual similarity;
+- bulk-remove legacy album relationships because a new view exists;
+- run a batch mutation before sync stability is confirmed;
+- access cloud services when the user requested local-only work.
+
+### Recommended workflow
+
+```text
+Confirm scope
+   ↓
+Read-only audit (database copy + WAL/SHM)
+   ↓
+Dry-run organization plan (no media changes)
+   ↓
+User approves a specific batch
+   ↓
+Apply a small batch through Photos UI or PhotoKit
+   ↓
+Re-audit counts, hidden state, fingerprint, album relationships, and sync state
+   ↓
+Record changes, exclusions, deletions, and next steps
+```
+
+Report album-relationship changes separately from media changes. Adding an asset to an album adds a reference; it does not copy the original media. Media deletion is always a separate approval step.
+
+### How to use it
+
+#### 1. Prompt Codex
+
+After the Skill has been explicitly installed in a Codex environment, start with a request such as:
+
+```text
+Use apple-photos-safe-organizer-skill.
+Audit my Apple Photos read-only and propose an album/folder plan with a dry-run.
+Do not change GPS, unhide media, or delete photos; report risks and review items first.
+```
+
+Useful staged requests include:
+
+```text
+Check only travel-place duplicates, omissions, and obvious anomalies. Preserve existing album relationships.
+```
+
+```text
+Apply this approved album-reference batch without deleting media, then verify counts and hidden state.
+```
+
+```text
+Find external-drive duplicate candidates. List only byte-identical files with a retained Photos copy; do not delete yet.
+```
+
+This repository does not automatically install or activate the Skill on the development machine. Installation and activation remain explicit user-controlled actions.
+
+#### 2. Run the read-only audit script
+
+The audit script copies `Photos.sqlite` and any WAL/SHM sidecars into a temporary directory, opens the copy in read-only mode, and emits only aggregate counts and a metadata fingerprint. It does not write to the Photos Library and does not read or delete original media.
+
+```bash
+cd /path/to/apple-photos-safe-organizer-skill
+mkdir -p reports
+python3 skills/apple-photos-safe-organizer-skill/scripts/audit_photos_library.py \
+  --library "/path/to/Photos Library.photoslibrary" \
+  --output reports/audit.json
+```
+
+The output includes `quick_check`, total/active/inactive counts, hidden count, screenshot count, video count, and an active-asset metadata fingerprint. Keep the audit JSON local; do not commit it to a public repository.
+
+If the machine has exactly one `*.photoslibrary` under the standard Pictures directory, `--library` may be omitted. Pass it explicitly when multiple libraries exist.
+
+#### 3. Validate before publishing
+
+```bash
+python3 skills/apple-photos-safe-organizer-skill/scripts/validate_skill.py \
+  skills/apple-photos-safe-organizer-skill
+
+python3 /path/to/skill-creator/scripts/quick_validate.py \
+  skills/apple-photos-safe-organizer-skill
+
+python3 skills/apple-photos-safe-organizer-skill/scripts/scan_release_privacy.py .
+python3 -m py_compile skills/apple-photos-safe-organizer-skill/scripts/*.py
+```
+
+The privacy scanner rejects common local paths, email addresses, UUIDs, precise coordinates, tokens, and sensitive-file patterns. It is a release gate, not a replacement for human review.
+
+### Organization principles
+
+#### Albums and folders
+
+- Keep primary browsing paths shallow and use durable dimensions: time/events, places/trips, people, sources, screenshots/documents, favorites, and review queues.
+- Keep source and import history for provenance; do not make it the only browsing hierarchy.
+- Use a folder when it owns several meaningful child albums; do not manufacture empty albums to fill an iOS four-tile cover.
+- Preserve legacy albums until a new cross-cutting view has been checked; retire old structure only after coverage verification and approval.
+- Split recurring cities or campuses by non-overlapping visit periods when the evidence and browseability justify it. Create a small-place album only when its photos, context, and location evidence are stable.
+
+#### Hidden, private, and low-quality media
+
+- Treat hidden state as a privacy boundary, not an organization obstacle; keep it hidden by default.
+- Treat old-camera quality, low resolution, blur, and missing OCR as review signals, not deletion criteria.
+- Keep cards, identity documents, QR codes, account information, and private people photos separate from ordinary memory albums.
+- For any unhide–organize–rehide plan, freeze an exact local manifest first, then verify the manifest and hidden count after the operation.
+
+#### Duplicates and external drives
+
+An external file is only a deletion candidate after all of the following are true:
+
+1. It has a byte-exact SHA-256 match to a retained copy;
+2. The file is readable and its type and duration are consistent;
+3. Photos album relationships, hidden state, and important flags are checked;
+4. The retained copy is accessible and its recovery path is recorded;
+5. The exact candidate list is shown again and explicitly approved before deletion.
+
+### Repository layout
+
+```text
+.
+├── README.md                         # Bilingual repository guide
+├── LICENSE
+├── .github/workflows/validate.yml    # CI structure, script, and privacy checks
+└── skills/apple-photos-safe-organizer-skill/
+    ├── SKILL.md                      # Skill entrypoint and core workflow
+    ├── agents/openai.yaml             # Codex UI metadata
+    ├── references/
+    │   ├── album-design.md            # Album naming, split, and folder-depth rules
+    │   └── safety-gates.md            # Authorization, baseline, mutation, and acceptance gates
+    └── scripts/
+        ├── audit_photos_library.py   # Read-only aggregate audit
+        ├── scan_release_privacy.py    # Release privacy scanner
+        └── validate_skill.py          # Portable Skill structure validator
+```
+
+The Skill package intentionally contains no README, photos, database copies, reports, or installation scripts. Those belong to the repository guide or to the user's controlled local environment.
+
+### Acceptance criteria
+
+An organization round is complete only when all applicable checks pass:
+
+- database `quick_check` is healthy;
+- media counts and the active-media fingerprint match the intended album-only or approved mutation scope;
+- hidden count has not changed without authorization;
+- protected album relationships remain intact;
+- target album references are complete and the idempotent dry-run reports no unintended work;
+- local sync state is stable;
+- changes, exclusions, deletions, and unresolved items are recorded clearly.
+
+Stop and re-audit if any count, fingerprint, hidden-state, or album-relationship drift cannot be explained.
+
+### License
+
+MIT.
