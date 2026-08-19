@@ -1,4 +1,4 @@
-# Apple Photos Safe Organizer
+# Apple Photos Curator
 
 [English](README.md) | 中文
 
@@ -60,7 +60,7 @@
 Skill 被明确安装到某个 Codex 环境后，可用类似下面的请求开始：
 
 ```text
-使用 apple-photos-safe-organizer-skill。
+使用 apple-photos-curator。
 先只读审计我的 Apple Photos，给出相簿/文件夹整理方案和 dry-run。
 不要改 GPS，不要解除隐藏，不要删除照片；先报告风险和待确认项。
 ```
@@ -86,9 +86,9 @@ Skill 被明确安装到某个 Codex 环境后，可用类似下面的请求开�
 脚本会把 `Photos.sqlite` 以及存在的 WAL/SHM sidecar 复制到临时目录，以只读方式查询，并只输出聚合统计和元数据指纹。它不会写入 Photos Library，也不会读取或删除原始媒体。
 
 ```bash
-cd /path/to/apple-photos-safe-organizer-skill
+cd /path/to/apple-photos-curator
 mkdir -p reports
-python3 skills/apple-photos-safe-organizer-skill/scripts/audit_photos_library.py \
+python3 skills/apple-photos-curator/scripts/audit_photos_library.py \
   --library "/path/to/Photos Library.photoslibrary" \
   --output reports/audit.json
 ```
@@ -100,14 +100,14 @@ python3 skills/apple-photos-safe-organizer-skill/scripts/audit_photos_library.py
 #### 3. 发布前检查
 
 ```bash
-python3 skills/apple-photos-safe-organizer-skill/scripts/validate_skill.py \
-  skills/apple-photos-safe-organizer-skill
+python3 skills/apple-photos-curator/scripts/validate_skill.py \
+  skills/apple-photos-curator
 
 python3 /path/to/skill-creator/scripts/quick_validate.py \
-  skills/apple-photos-safe-organizer-skill
+  skills/apple-photos-curator
 
-python3 skills/apple-photos-safe-organizer-skill/scripts/scan_release_privacy.py .
-python3 -m py_compile skills/apple-photos-safe-organizer-skill/scripts/*.py
+python3 skills/apple-photos-curator/scripts/scan_release_privacy.py .
+python3 -m py_compile skills/apple-photos-curator/scripts/*.py
 ```
 
 隐私扫描会拒绝常见的本地路径、邮箱、UUID、精确坐标、令牌和敏感文件模式。它是发布前的最后一道检查，不替代人工 review。
@@ -147,7 +147,7 @@ python3 -m py_compile skills/apple-photos-safe-organizer-skill/scripts/*.py
 ├── README.zh-CN.md                   # 中文仓库说明
 ├── LICENSE
 ├── .github/workflows/validate.yml    # CI 结构、脚本和隐私校验
-└── skills/apple-photos-safe-organizer-skill/
+└── skills/apple-photos-curator/
     ├── SKILL.md                      # Skill 入口和核心工作流
     ├── agents/openai.yaml             # Codex UI 元数据
     ├── references/

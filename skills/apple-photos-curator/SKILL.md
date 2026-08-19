@@ -1,9 +1,9 @@
 ---
-name: apple-photos-safe-organizer-skill
+name: apple-photos-curator
 description: Audit, design, and safely apply organization changes to a macOS Apple Photos library. Use for album and folder taxonomy, recurring-place or trip albums, GPS anomaly triage, screenshot and video review, hidden-media handling, exact duplicate checks, external-drive comparison, iCloud sync verification, or any request where Photos media must not be lost. Require dry-runs, read-only database analysis, PhotoKit-based writes, privacy-safe reports, and post-change integrity checks.
 ---
 
-# Apple Photos Safe Organizer
+# Apple Photos Curator
 
 Organize Apple Photos without treating metadata guesses as truth or album cleanup as permission to delete media.
 

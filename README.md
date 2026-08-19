@@ -1,8 +1,8 @@
-# Apple Photos Safe Organizer
+# Apple Photos Curator
 
 [中文](README.zh-CN.md) | English
 
-Apple Photos Safe Organizer is a Codex Skill for safe, evidence-based Apple Photos organization. It audits first, designs a dry-run plan second, and applies only approved changes in small batches. Its purpose is to organize albums and folders without guessing GPS corrections, exposing hidden media, or deleting media accidentally.
+Apple Photos Curator is a Codex Skill for safe, evidence-based Apple Photos organization. It audits first, designs a dry-run plan second, and applies only approved changes in small batches. Its purpose is to organize albums and folders without guessing GPS corrections, exposing hidden media, or deleting media accidentally.
 
 This repository is a generic, privacy-safe public package. It contains no photos, Photos databases, thumbnails, OCR exports, precise coordinates, deletion manifests, or user-specific reports.
 
@@ -58,7 +58,7 @@ Report album-relationship changes separately from media changes. Adding an asset
 After the Skill has been explicitly installed in a Codex environment, start with a request such as:
 
 ```text
-Use apple-photos-safe-organizer-skill.
+Use apple-photos-curator.
 Audit my Apple Photos read-only and propose an album/folder plan with a dry-run.
 Do not change GPS, unhide media, or delete photos; report risks and review items first.
 ```
@@ -84,9 +84,9 @@ This repository does not automatically install or activate the Skill on the deve
 The audit script copies `Photos.sqlite` and any WAL/SHM sidecars into a temporary directory, opens the copy in read-only mode, and emits only aggregate counts and a metadata fingerprint. It does not write to the Photos Library and does not read or delete original media.
 
 ```bash
-cd /path/to/apple-photos-safe-organizer-skill
+cd /path/to/apple-photos-curator
 mkdir -p reports
-python3 skills/apple-photos-safe-organizer-skill/scripts/audit_photos_library.py \
+python3 skills/apple-photos-curator/scripts/audit_photos_library.py \
   --library "/path/to/Photos Library.photoslibrary" \
   --output reports/audit.json
 ```
@@ -98,14 +98,14 @@ If the machine has exactly one `*.photoslibrary` under the standard Pictures dir
 ### 3. Validate before publishing
 
 ```bash
-python3 skills/apple-photos-safe-organizer-skill/scripts/validate_skill.py \
-  skills/apple-photos-safe-organizer-skill
+python3 skills/apple-photos-curator/scripts/validate_skill.py \
+  skills/apple-photos-curator
 
 python3 /path/to/skill-creator/scripts/quick_validate.py \
-  skills/apple-photos-safe-organizer-skill
+  skills/apple-photos-curator
 
-python3 skills/apple-photos-safe-organizer-skill/scripts/scan_release_privacy.py .
-python3 -m py_compile skills/apple-photos-safe-organizer-skill/scripts/*.py
+python3 skills/apple-photos-curator/scripts/scan_release_privacy.py .
+python3 -m py_compile skills/apple-photos-curator/scripts/*.py
 ```
 
 The privacy scanner rejects common local paths, email addresses, UUIDs, precise coordinates, tokens, and sensitive-file patterns. It is a release gate, not a replacement for human review.
@@ -145,7 +145,7 @@ An external file is only a deletion candidate after all of the following are tru
 ├── README.zh-CN.md                   # Chinese repository guide
 ├── LICENSE
 ├── .github/workflows/validate.yml    # CI structure, script, and privacy checks
-└── skills/apple-photos-safe-organizer-skill/
+└── skills/apple-photos-curator/
     ├── SKILL.md                      # Skill entrypoint and core workflow
     ├── agents/openai.yaml             # Codex UI metadata
     ├── references/

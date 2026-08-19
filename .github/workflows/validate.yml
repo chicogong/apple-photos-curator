@@ -21,10 +21,10 @@ jobs:
           python-version: "3.11"
 
       - name: Validate Skill structure
-        run: python3 skills/apple-photos-safe-organizer-skill/scripts/validate_skill.py skills/apple-photos-safe-organizer-skill
+        run: python3 skills/apple-photos-curator/scripts/validate_skill.py skills/apple-photos-curator
 
       - name: Compile bundled scripts
-        run: python3 -m py_compile skills/apple-photos-safe-organizer-skill/scripts/*.py
+        run: python3 -m py_compile skills/apple-photos-curator/scripts/*.py
 
       - name: Run release privacy scan
-        run: python3 skills/apple-photos-safe-organizer-skill/scripts/scan_release_privacy.py .
+        run: python3 skills/apple-photos-curator/scripts/scan_release_privacy.py .

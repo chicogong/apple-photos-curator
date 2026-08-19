@@ -1,4 +1,4 @@
 interface:
-  display_name: "Apple Photos Safe Organizer"
+  display_name: "Apple Photos Curator"
   short_description: "Audit and organize Apple Photos with reversible safety gates"
-  default_prompt: "Use $apple-photos-safe-organizer-skill to audit my Apple Photos library and propose a non-destructive organization plan."
+  default_prompt: "Use $apple-photos-curator to audit my Apple Photos library and propose a non-destructive organization plan."
