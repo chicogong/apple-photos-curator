@@ -107,10 +107,11 @@ python3 /path/to/skill-creator/scripts/quick_validate.py \
   skills/apple-photos-curator
 
 python3 skills/apple-photos-curator/scripts/scan_release_privacy.py .
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_*.py' -v
 python3 -m py_compile skills/apple-photos-curator/scripts/*.py
 ```
 
-The root validator enforces the shared Chicogong repository contract and the behavior-case schema. The Skill-local validator and privacy scanner remain product-owned gates. The privacy scanner rejects common local paths, email addresses, UUIDs, precise coordinates, tokens, and sensitive-file patterns. These checks do not replace human review or prove live agent behavior.
+The root validator enforces the shared Chicogong repository contract and the behavior-case schema. The Skill-local validator, privacy scanner, and audit-script regression tests remain product-owned gates. The tests build temporary synthetic SQLite databases to verify counts, schema fallbacks, fingerprint behavior, source-database preservation, and CLI output without discovering or reading a real Photos Library. The privacy scanner rejects common local paths, email addresses, UUIDs, precise coordinates, tokens, and sensitive-file patterns. These checks do not replace human review or prove live agent behavior.
 
 ## Organization principles
 
@@ -151,7 +152,8 @@ An external file is only a deletion candidate after all of the following are tru
 ├── .github/workflows/validate.yml    # Product-owned combined CI
 ├── scripts/validate_skill.py         # Studio-managed repository contract
 ├── tests/
-│   └── apple-photos-curator.behavior.json  # Behavior cases, not fixed response text
+│   ├── apple-photos-curator.behavior.json  # Behavior cases, not fixed response text
+│   └── test_audit_photos_library.py        # Synthetic SQLite regression tests
 └── skills/apple-photos-curator/
     ├── SKILL.md                      # Skill entrypoint and core workflow
     ├── agents/openai.yaml             # Codex UI metadata

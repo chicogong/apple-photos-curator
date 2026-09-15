@@ -109,10 +109,11 @@ python3 /path/to/skill-creator/scripts/quick_validate.py \
   skills/apple-photos-curator
 
 python3 skills/apple-photos-curator/scripts/scan_release_privacy.py .
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_*.py' -v
 python3 -m py_compile skills/apple-photos-curator/scripts/*.py
 ```
 
-根级 validator 负责 Chicogong 共享仓库契约和行为用例 schema；Skill 内 validator 与隐私扫描继续由本产品维护。隐私扫描会拒绝常见的本地路径、邮箱、UUID、精确坐标、令牌和敏感文件模式。这些检查不替代人工 review，也不证明 Agent 运行时行为已经通过。
+根级 validator 负责 Chicogong 共享仓库契约和行为用例 schema；Skill 内 validator、隐私扫描与审计脚本回归测试继续由本产品维护。测试使用临时生成的合成 SQLite 数据库，验证计数、schema 降级兼容、指纹变化、源数据库不变与 CLI 输出；不会发现或读取真实 Photos Library。隐私扫描会拒绝常见的本地路径、邮箱、UUID、精确坐标、令牌和敏感文件模式。这些检查不替代人工 review，也不证明 Agent 运行时行为已经通过。
 
 ### 整理决策原则
 
@@ -153,7 +154,8 @@ python3 -m py_compile skills/apple-photos-curator/scripts/*.py
 ├── .github/workflows/validate.yml    # 产品自有的组合 CI
 ├── scripts/validate_skill.py         # Studio 托管的仓库契约
 ├── tests/
-│   └── apple-photos-curator.behavior.json  # 行为用例，不匹配固定答复
+│   ├── apple-photos-curator.behavior.json  # 行为用例，不匹配固定答复
+│   └── test_audit_photos_library.py        # 合成 SQLite 回归测试
 └── skills/apple-photos-curator/
     ├── SKILL.md                      # Skill 入口和核心工作流
     ├── agents/openai.yaml             # Codex UI 元数据

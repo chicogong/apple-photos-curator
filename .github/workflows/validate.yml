@@ -26,6 +26,9 @@ jobs:
       - name: Validate repository contract
         run: python3 scripts/validate_skill.py .
 
+      - name: Test read-only audit behavior
+        run: PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_*.py' -v
+
       - name: Compile bundled scripts
         run: python3 -m py_compile skills/apple-photos-curator/scripts/*.py
 
