@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "template_version": 3,
+  "skill_name": "apple-photos-curator",
+  "managed_files": [
+    "scripts/validate_skill.py"
+  ]
+}

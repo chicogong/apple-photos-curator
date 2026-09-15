@@ -100,6 +100,8 @@ python3 skills/apple-photos-curator/scripts/audit_photos_library.py \
 #### 3. 发布前检查
 
 ```bash
+python3 scripts/validate_skill.py .
+
 python3 skills/apple-photos-curator/scripts/validate_skill.py \
   skills/apple-photos-curator
 
@@ -110,7 +112,7 @@ python3 skills/apple-photos-curator/scripts/scan_release_privacy.py .
 python3 -m py_compile skills/apple-photos-curator/scripts/*.py
 ```
 
-隐私扫描会拒绝常见的本地路径、邮箱、UUID、精确坐标、令牌和敏感文件模式。它是发布前的最后一道检查，不替代人工 review。
+根级 validator 负责 Chicogong 共享仓库契约和行为用例 schema；Skill 内 validator 与隐私扫描继续由本产品维护。隐私扫描会拒绝常见的本地路径、邮箱、UUID、精确坐标、令牌和敏感文件模式。这些检查不替代人工 review，也不证明 Agent 运行时行为已经通过。
 
 ### 整理决策原则
 
@@ -146,7 +148,12 @@ python3 -m py_compile skills/apple-photos-curator/scripts/*.py
 ├── README.md                         # 英文仓库说明
 ├── README.zh-CN.md                   # 中文仓库说明
 ├── LICENSE
-├── .github/workflows/validate.yml    # CI 结构、脚本和隐私校验
+├── SECURITY.md                       # 私密漏洞报告策略
+├── .skill-studio.json                # Studio 托管文件边界
+├── .github/workflows/validate.yml    # 产品自有的组合 CI
+├── scripts/validate_skill.py         # Studio 托管的仓库契约
+├── tests/
+│   └── apple-photos-curator.behavior.json  # 行为用例，不匹配固定答复
 └── skills/apple-photos-curator/
     ├── SKILL.md                      # Skill 入口和核心工作流
     ├── agents/openai.yaml             # Codex UI 元数据
@@ -160,6 +167,8 @@ python3 -m py_compile skills/apple-photos-curator/scripts/*.py
 ```
 
 Skill 包内刻意不放 README、照片、数据库副本、报告或安装脚本；这些内容属于仓库说明或使用者自己的本地环境。
+
+Skill Studio 只管理 `.skill-studio.json` 中声明的根级 `scripts/validate_skill.py`。本仓库继续拥有 workflow 和产品专属检查；Studio 升级不得覆盖它们。
 
 ### 验收标准
 

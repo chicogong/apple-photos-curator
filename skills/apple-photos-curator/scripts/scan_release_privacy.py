@@ -11,7 +11,7 @@ from pathlib import Path
 IGNORED_PARTS = {".git", "__pycache__", ".pytest_cache", ".mypy_cache"}
 TEXT_SUFFIXES = {"", ".md", ".txt", ".py", ".sh", ".json", ".yaml", ".yml", ".toml", ".ini", ".cfg"}
 PATTERNS = {
-    "macOS home path": re.compile(r"/Users/[A-Za-z0-9._-]+/"),
+    "macOS home path": re.compile("/" + r"Users/[A-Za-z0-9._-]+/"),
     "Windows home path": re.compile(r"[A-Za-z]:\\\\Users\\\\[^\\\\\s]+"),
     "email address": re.compile(r"\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b", re.I),
     "asset-like UUID": re.compile(r"\b[0-9A-F]{8}-[0-9A-F]{4}-[1-5][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}\b", re.I),

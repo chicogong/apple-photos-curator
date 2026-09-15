@@ -98,6 +98,8 @@ If the machine has exactly one `*.photoslibrary` under the standard Pictures dir
 ### 3. Validate before publishing
 
 ```bash
+python3 scripts/validate_skill.py .
+
 python3 skills/apple-photos-curator/scripts/validate_skill.py \
   skills/apple-photos-curator
 
@@ -108,7 +110,7 @@ python3 skills/apple-photos-curator/scripts/scan_release_privacy.py .
 python3 -m py_compile skills/apple-photos-curator/scripts/*.py
 ```
 
-The privacy scanner rejects common local paths, email addresses, UUIDs, precise coordinates, tokens, and sensitive-file patterns. It is a release gate, not a replacement for human review.
+The root validator enforces the shared Chicogong repository contract and the behavior-case schema. The Skill-local validator and privacy scanner remain product-owned gates. The privacy scanner rejects common local paths, email addresses, UUIDs, precise coordinates, tokens, and sensitive-file patterns. These checks do not replace human review or prove live agent behavior.
 
 ## Organization principles
 
@@ -144,7 +146,12 @@ An external file is only a deletion candidate after all of the following are tru
 ├── README.md                         # English repository guide
 ├── README.zh-CN.md                   # Chinese repository guide
 ├── LICENSE
-├── .github/workflows/validate.yml    # CI structure, script, and privacy checks
+├── SECURITY.md                       # Private vulnerability-reporting policy
+├── .skill-studio.json                # Studio-managed file boundary
+├── .github/workflows/validate.yml    # Product-owned combined CI
+├── scripts/validate_skill.py         # Studio-managed repository contract
+├── tests/
+│   └── apple-photos-curator.behavior.json  # Behavior cases, not fixed response text
 └── skills/apple-photos-curator/
     ├── SKILL.md                      # Skill entrypoint and core workflow
     ├── agents/openai.yaml             # Codex UI metadata
@@ -158,6 +165,8 @@ An external file is only a deletion candidate after all of the following are tru
 ```
 
 The Skill package intentionally contains no README, photos, database copies, reports, or installation scripts. Those belong to the repository guides or to the user's controlled local environment.
+
+Skill Studio manages only the root `scripts/validate_skill.py` declared in `.skill-studio.json`. This repository owns its workflow and product-specific checks; a Studio upgrade must not overwrite them.
 
 ## Acceptance criteria
 

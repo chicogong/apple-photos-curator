@@ -1,6 +1,6 @@
 ---
 name: apple-photos-curator
-description: Audit, design, and safely apply organization changes to a macOS Apple Photos library. Use for album and folder taxonomy, recurring-place or trip albums, GPS anomaly triage, screenshot and video review, hidden-media handling, exact duplicate checks, external-drive comparison, iCloud sync verification, or any request where Photos media must not be lost. Require dry-runs, read-only database analysis, PhotoKit-based writes, privacy-safe reports, and post-change integrity checks.
+description: Safely audit and organize macOS Apple Photos when users need album design, trip grouping, GPS triage, hidden-media handling, duplicate checks, or sync verification. Require read-only baselines, explicit write approval, privacy-safe evidence, and post-change integrity checks.
 ---
 
 # Apple Photos Curator
