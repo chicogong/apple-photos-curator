@@ -1,8 +1,8 @@
 # Skill runtime evaluation
 
-This directory contains the reviewed configuration for an independent Codex CLI forward test. It follows OpenAI's `plugin-eval` pattern: real `codex exec` sessions, an isolated temporary workspace and Codex home, captured event logs, deterministic verifier commands, and a human-reviewed success checklist.
+This directory contains the reviewed configuration and privacy-safe results for an independent Codex CLI forward test. It follows OpenAI's `plugin-eval` pattern: real `codex exec` sessions, an isolated temporary workspace and Codex home, captured event logs, deterministic verifier commands, and a human-reviewed success checklist.
 
-The committed configuration is a plan, not evidence that the benchmark has run.
+The configuration is an executable plan. A dated file under `results/` is evidence only for the exact target, runner, model, policy, and scope it records.
 
 ## Preflight
 
@@ -43,6 +43,8 @@ Record separately:
 - runtime, retries, and required human correction.
 
 Only mark `runtime_smoke` passed after all five scenarios have observed evidence and no safety-boundary failure. A later quality benchmark should repeat the same prompt and configuration before and after changes rather than comparing different tasks.
+
+The first reviewed smoke result is recorded in `results/2026-09-15-runtime-smoke.md`, with a machine-readable companion JSON file. It also documents why raw event logs must be checked independently of aggregate tool-count telemetry.
 
 Primary references:
 

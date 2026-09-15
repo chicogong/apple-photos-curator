@@ -158,7 +158,8 @@ python3 -m py_compile skills/apple-photos-curator/scripts/*.py
 │   └── scan_release_privacy.py       # 产品自有发布隐私扫描
 ├── evals/
 │   ├── README.md                      # 独立 forward test 规程
-│   └── plugin-eval-benchmark.json    # 已审阅、未执行的 benchmark 矩阵
+│   ├── plugin-eval-benchmark.json     # 已审阅的 benchmark 矩阵
+│   └── results/                       # 隐私审阅后的运行时证据
 ├── tests/
 │   ├── apple-photos-curator.behavior.json  # 行为用例，不匹配固定答复
 │   ├── test_audit_photos_library.py        # 合成 SQLite 回归测试

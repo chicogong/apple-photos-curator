@@ -156,7 +156,8 @@ An external file is only a deletion candidate after all of the following are tru
 │   └── scan_release_privacy.py       # Product-owned release privacy scanner
 ├── evals/
 │   ├── README.md                      # Independent forward-test protocol
-│   └── plugin-eval-benchmark.json    # Reviewed, non-executed benchmark matrix
+│   ├── plugin-eval-benchmark.json     # Reviewed benchmark matrix
+│   └── results/                       # Privacy-reviewed runtime evidence
 ├── tests/
 │   ├── apple-photos-curator.behavior.json  # Behavior cases, not fixed response text
 │   ├── test_audit_photos_library.py        # Synthetic SQLite regression tests
