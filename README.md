@@ -100,13 +100,13 @@ If the machine has exactly one `*.photoslibrary` under the standard Pictures dir
 ```bash
 python3 scripts/validate_skill.py .
 
-python3 skills/apple-photos-curator/scripts/validate_skill.py \
+python3 scripts/validate_product.py \
   skills/apple-photos-curator
 
 python3 /path/to/skill-creator/scripts/quick_validate.py \
   skills/apple-photos-curator
 
-python3 skills/apple-photos-curator/scripts/scan_release_privacy.py .
+python3 scripts/scan_release_privacy.py .
 PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_*.py' -v
 python3 -m py_compile skills/apple-photos-curator/scripts/*.py
 ```
@@ -150,10 +150,17 @@ An external file is only a deletion candidate after all of the following are tru
 ├── SECURITY.md                       # Private vulnerability-reporting policy
 ├── .skill-studio.json                # Studio-managed file boundary
 ├── .github/workflows/validate.yml    # Product-owned combined CI
-├── scripts/validate_skill.py         # Studio-managed repository contract
+├── scripts/
+│   ├── validate_skill.py             # Studio-managed repository contract
+│   ├── validate_product.py           # Product-owned Skill structure validator
+│   └── scan_release_privacy.py       # Product-owned release privacy scanner
+├── evals/
+│   ├── README.md                      # Independent forward-test protocol
+│   └── plugin-eval-benchmark.json    # Reviewed, non-executed benchmark matrix
 ├── tests/
 │   ├── apple-photos-curator.behavior.json  # Behavior cases, not fixed response text
-│   └── test_audit_photos_library.py        # Synthetic SQLite regression tests
+│   ├── test_audit_photos_library.py        # Synthetic SQLite regression tests
+│   └── test_eval_config.py                 # Benchmark isolation and coverage contract
 └── skills/apple-photos-curator/
     ├── SKILL.md                      # Skill entrypoint and core workflow
     ├── agents/openai.yaml             # Codex UI metadata
@@ -161,9 +168,7 @@ An external file is only a deletion candidate after all of the following are tru
     │   ├── album-design.md            # Album naming, split, and folder-depth rules
     │   └── safety-gates.md            # Authorization, baseline, mutation, and acceptance gates
     └── scripts/
-        ├── audit_photos_library.py   # Read-only aggregate audit
-        ├── scan_release_privacy.py    # Release privacy scanner
-        └── validate_skill.py          # Portable Skill structure validator
+        └── audit_photos_library.py   # Read-only aggregate audit
 ```
 
 The Skill package intentionally contains no README, photos, database copies, reports, or installation scripts. Those belong to the repository guides or to the user's controlled local environment.

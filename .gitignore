@@ -3,6 +3,7 @@ __pycache__/
 *.pyc
 reports/
 review-exports/
+.plugin-eval/
 *.photoslibrary/
 *.sqlite*
 *.jpg

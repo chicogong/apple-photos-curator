@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fail when a release tree contains likely personal data or secrets."""
+"""Fail when a product release tree contains likely personal data or secrets."""
 
 from __future__ import annotations
 

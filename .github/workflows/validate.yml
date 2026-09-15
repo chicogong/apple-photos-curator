@@ -21,7 +21,7 @@ jobs:
           python-version: "3.11"
 
       - name: Validate Skill structure
-        run: python3 skills/apple-photos-curator/scripts/validate_skill.py skills/apple-photos-curator
+        run: python3 scripts/validate_product.py skills/apple-photos-curator
 
       - name: Validate repository contract
         run: python3 scripts/validate_skill.py .
@@ -33,4 +33,4 @@ jobs:
         run: python3 -m py_compile skills/apple-photos-curator/scripts/*.py
 
       - name: Run release privacy scan
-        run: python3 skills/apple-photos-curator/scripts/scan_release_privacy.py .
+        run: python3 scripts/scan_release_privacy.py .

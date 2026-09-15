@@ -102,13 +102,13 @@ python3 skills/apple-photos-curator/scripts/audit_photos_library.py \
 ```bash
 python3 scripts/validate_skill.py .
 
-python3 skills/apple-photos-curator/scripts/validate_skill.py \
+python3 scripts/validate_product.py \
   skills/apple-photos-curator
 
 python3 /path/to/skill-creator/scripts/quick_validate.py \
   skills/apple-photos-curator
 
-python3 skills/apple-photos-curator/scripts/scan_release_privacy.py .
+python3 scripts/scan_release_privacy.py .
 PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_*.py' -v
 python3 -m py_compile skills/apple-photos-curator/scripts/*.py
 ```
@@ -152,10 +152,17 @@ python3 -m py_compile skills/apple-photos-curator/scripts/*.py
 ├── SECURITY.md                       # 私密漏洞报告策略
 ├── .skill-studio.json                # Studio 托管文件边界
 ├── .github/workflows/validate.yml    # 产品自有的组合 CI
-├── scripts/validate_skill.py         # Studio 托管的仓库契约
+├── scripts/
+│   ├── validate_skill.py             # Studio 托管的仓库契约
+│   ├── validate_product.py           # 产品自有 Skill 结构校验
+│   └── scan_release_privacy.py       # 产品自有发布隐私扫描
+├── evals/
+│   ├── README.md                      # 独立 forward test 规程
+│   └── plugin-eval-benchmark.json    # 已审阅、未执行的 benchmark 矩阵
 ├── tests/
 │   ├── apple-photos-curator.behavior.json  # 行为用例，不匹配固定答复
-│   └── test_audit_photos_library.py        # 合成 SQLite 回归测试
+│   ├── test_audit_photos_library.py        # 合成 SQLite 回归测试
+│   └── test_eval_config.py                 # benchmark 隔离与覆盖契约
 └── skills/apple-photos-curator/
     ├── SKILL.md                      # Skill 入口和核心工作流
     ├── agents/openai.yaml             # Codex UI 元数据
@@ -163,9 +170,7 @@ python3 -m py_compile skills/apple-photos-curator/scripts/*.py
     │   ├── album-design.md            # 相簿命名、拆分和文件夹层级规则
     │   └── safety-gates.md            # 授权、基线、变更和验收门槛
     └── scripts/
-        ├── audit_photos_library.py   # 只读聚合审计
-        ├── scan_release_privacy.py    # 发布隐私扫描
-        └── validate_skill.py          # Skill 结构校验
+        └── audit_photos_library.py   # 只读聚合审计
 ```
 
 Skill 包内刻意不放 README、照片、数据库副本、报告或安装脚本；这些内容属于仓库说明或使用者自己的本地环境。

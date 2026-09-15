@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the portable structure of a published Codex skill."""
+"""Validate the product-owned structure of a published Codex skill."""
 
 from __future__ import annotations
 

@@ -83,7 +83,11 @@ def audit(library: Path) -> dict:
         total = scalar(connection, "select count(*) from ZASSET")
         active = scalar(connection, f"select count(*) from ZASSET where {where}")
         hidden = scalar(connection, f"select count(*) from ZASSET where {where} and {expr(available, 'ZHIDDEN')}<>0")
-        screenshot = scalar(connection, f"select count(*) from ZASSET where {where} and {expr(available, 'ZISDETECTEDSCREENSHOT')}<>0")
+        screenshot_expr = expr(available, "ZISDETECTEDSCREENSHOT")
+        screenshot = scalar(
+            connection,
+            f"select count(*) from ZASSET where {where} and {screenshot_expr}<>0",
+        )
         video = scalar(connection, f"select count(*) from ZASSET where {where} and {expr(available, 'ZKIND')}=1")
         return {
             "mode": "read_only_copied_database_aggregate",

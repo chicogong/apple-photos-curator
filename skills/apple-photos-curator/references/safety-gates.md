@@ -30,6 +30,19 @@ Do not persist raw UUIDs, OCR text, precise coordinates, or original paths in a 
 - Batch large membership operations and wait for library stabilization.
 - Keep media deletion in a separate, explicitly approved phase.
 - Do not bypass Touch ID, password prompts, or macOS privacy controls.
+- Before an approved unhide-organize-rehide operation, freeze an exact local manifest; afterward, rehide the same items and verify both the manifest and hidden count.
+
+## Exact duplicate deletion gate
+
+An external file becomes a deletion candidate only after:
+
+1. SHA-256 and byte equality match an accessible retained copy;
+2. media readability, type, and duration are consistent;
+3. album relationships, hidden state, and protected flags are checked;
+4. the retained copy and recovery location are recorded;
+5. the exact deletion list is shown again and explicitly approved.
+
+Keep grouped assets, sidecars, protected media, and any uncertain match on HOLD.
 
 ## Acceptance
 
